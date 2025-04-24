@@ -100,12 +100,15 @@ class UI:
 
                     case '2':
                         test = input('new password:')
+
                         self.session_user['password'] = test
 
                         user = User(**self.session_user)
                         a, b = user.is_valid()
                         if a:
-                            user.update_user(password=test)
+                            hashed_password = bcrypt.hashpw(test.encode('utf-8'), bcrypt.gensalt())
+
+                            user.update_user(password=hashed_password)
 
                         else:
                             print(b, 'please try again')
